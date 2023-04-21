@@ -57,7 +57,7 @@ module.exports = {
 
     // SERVER_IP: "192.168.4.1",
     // SERVER_IP: "192.168.1.119",
-    SERVER_IP: "192.168.137.155",
+    SERVER_IP: "192.168.137.230",
   },
 
   app: {
