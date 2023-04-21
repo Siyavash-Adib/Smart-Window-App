@@ -1,0 +1,2 @@
+#Only Include these specific directories and subdirectories:
+node_modules/
