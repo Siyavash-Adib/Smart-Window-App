@@ -221,11 +221,11 @@ function extractDeviceStatusPacket(data) {
     for(let i = 0; i < 6; i++) {
       result.push({
         Normal_Value: config.app.BSP_GPIO_PIN_STATE[
-          extractValueFromData(1, 'uint8')
+          extractValueFromData(4, 'uint8')
         ],
         Open_Close_Time_Gap: extractValueFromData(4, 'uint32'),
         Trigger_Event: config.app.SENSOR_INPUT_EVENT[
-          extractValueFromData(1, 'uint8')
+          extractValueFromData(4, 'uint8')
         ],
       });
     }

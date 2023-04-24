@@ -129,11 +129,13 @@ function uiEventsHandler(event) {
           break;
 
         case 'dialogButtonSubmit':
+          menuControl.closeDialog();
           switch(event.setting.name) {
             case 'Do you want to remove this window ?':
               wifiCom.sendCommandPacket('removeWindow', {
                 windowId: appSelectedWindowCard
               });
+              menuControl.goToPage('.home-page');
               break;
             
             default: 
@@ -157,6 +159,7 @@ function uiEventsHandler(event) {
           break;
         
         case 'dialogButtonSubmit':
+          menuControl.closeDialog();
           const convertValueToArray = (format, size) => {
             if(format === 'array') {
               // TBD
