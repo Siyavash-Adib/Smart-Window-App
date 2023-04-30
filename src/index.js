@@ -1,4 +1,4 @@
-console.clear();
+// console.clear();
 
 const toolBox = require('./toolBox.js');
 const menuControl = require('./menuControl.js');
@@ -636,6 +636,11 @@ function appRefreshHomePage() {
     menuControl.setWindowLockState(
       device.settings.Device_ID.value,
       device.status.Window_Locked === 'Yes'
+    );
+    
+    menuControl.setWindowBlockedState(
+      device.settings.Device_ID.value,
+      device.status.Blockage_Detected === 'Yes'
     );
 
     firstDevice = false;

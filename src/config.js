@@ -55,14 +55,14 @@ module.exports = {
       'Setting_Set_Device_Name'
     ],
 
-    // SERVER_IP: "192.168.4.1",
+    SERVER_IP: "192.168.4.1",
     // SERVER_IP: "192.168.1.119",
-    SERVER_IP: "192.168.137.242",
+    // SERVER_IP: "192.168.137.104",
   },
 
   app: {
-    WIFI_MAX_REQUEST_FAILS: 3,
-    NETWORK_UPDATES_PER_SECOND: 1,
+    WIFI_MAX_REQUEST_FAILS: 10,
+    NETWORK_UPDATES_PER_SECOND: 2,
     MAX_NETWORK_SIZE: 10,
     MAX_PENDING_FOR_RESPONSE_TIME: 400,
     BSP_GPIO_PIN_STATE: [

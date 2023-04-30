@@ -1,8 +1,6 @@
 const toolBox = require('./toolBox.js');
 const config = require('./config.js');
 
-const CLICK_1_VOLUME = 0.2;
-
 const click1Audio = document.querySelector("#click-1"); 
 const dialog1 = document.querySelector('.dialog-1');
 const dialog2 = document.querySelector('.dialog-2');
@@ -485,6 +483,18 @@ function setWindowLockState(windowId, locked) {
   }
 }
 
+function setWindowBlockedState(windowId, blocked) {
+  let windowDOMElement = getWindowDOMElement(windowId);
+  if(isCentralWindow(windowId)) {
+      windowDOMElement = getCentralWindowParentDOMElement(windowId);
+  }
+  if(blocked) {
+    windowDOMElement.classList.add('window-blocked');
+  } else {
+    windowDOMElement.classList.remove('window-blocked');
+  }
+}
+
 function windowGoOffline(windowId) {
   getWindowDOMElement(windowId).classList.add('offline-window');
   if(isCentralWindow(windowId)) {
@@ -569,8 +579,10 @@ function hideAllOtherPages(pageSelector) {
   }
 
   if(pageSelector === '.home-page') {
-    document.querySelector('.nav-bar')
-      .classList.add('hidden-page');
+    let navBar = document.querySelector('.nav-bar');
+    if(navBar) {
+      navBar.classList.add('hidden-page');
+    }
   }
 }
 
@@ -617,7 +629,7 @@ function navBarInit () {
   document.querySelectorAll('.nav-bar--item')
   .forEach((navBarItem) => {
     navBarItem.addEventListener('click', () => {
-      click1Audio.volume = CLICK_1_VOLUME;
+      click1Audio.volume = config.menuControl.CLICK_1_VOLUME;
       click1Audio.play();
       navBarEvent(navBarItem);
     })
@@ -839,5 +851,6 @@ module.exports = {
   swtichSettingsPage,
   focusNavBarItem,
   setWindowLockState,
+  setWindowBlockedState,
 };
 
