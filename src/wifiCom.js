@@ -30,6 +30,14 @@ function sendPacketToCenterNode(
     // case 4:
     // case 5:
     // case 6:
+    // case 7:
+    // case 8:
+    // case 9:
+    // case 10:
+    // case 11:
+    // case 12:
+    // case 13:
+    // case 14:
     case 0xFF:
       console.log("Packet Data:", packetData);
       console.log("Transmitting Packet:", TXPacketString);
@@ -323,6 +331,10 @@ function extractDeviceStatusPacket(data) {
       value: extractValueFromData(4, 'uint32') === 0 ? 'No' : 'Yes',
       editable: true,
     },
+    Encoder_Inverted: {
+      value: extractValueFromData(4, 'uint32') === 0 ? 'No' : 'Yes',
+      editable: true,
+    },
     Sensor_Input_Configs: {
       value: extractSensorInputConfigs(),
       editable: true,
@@ -360,6 +372,7 @@ function extractDeviceStatusPacket(data) {
   deviceStatus.status = {
     Window_Index: windowIndex,
     Encoder_Value: extractValueFromData(4, 'int32'),
+    Motor_1_Current_Speed: extractValueFromData(4, 'int32'),
     Blockage_Detected: extractValueFromData(1, 'uint8') ? 'Yes' : 'No',
     Window_Locked: extractValueFromData(1, 'uint8') ? 'Yes' : 'No',
     Window_State: config.app.WINDOW_STATE[
@@ -454,6 +467,56 @@ function sendCommandPacket(commandName, options) {
       sendPacketToCenterNode(
         wifiCommandValue('WiFi_Command_Add_Window'),
         [...options.setting.value]
+      );
+      break;
+
+    case 'moveforward':
+      console.log('sending move forward');
+      console.log('options', options);
+      sendPacketToCenterNode(
+        wifiCommandValue('WiFi_Command_Move_Forward'),
+        [
+          ...toolBox.fromHexString(options.windowId),
+          ...toolBox.numToByteArray(options.movementTime)
+        ],
+      );
+      break;
+        
+    case 'stopmoving':
+      sendPacketToCenterNode(
+        wifiCommandValue('WiFi_Command_Stop_Moving'),
+        [...toolBox.fromHexString(options.windowId)]
+      );
+      break;
+        
+    case 'movebackward':
+      sendPacketToCenterNode(
+        wifiCommandValue('WiFi_Command_Move_Backward'),
+        [
+          ...toolBox.fromHexString(options.windowId),
+          ...toolBox.numToByteArray(options.movementTime)
+        ],
+      );
+      break;
+        
+    case 'windowlock':
+      sendPacketToCenterNode(
+        wifiCommandValue('WiFi_Command_Window_Lock'),
+        [...toolBox.fromHexString(options.windowId)]
+      );
+      break;
+        
+    case 'windowunlock':
+      sendPacketToCenterNode(
+        wifiCommandValue('WiFi_Command_Window_Unlock'),
+        [...toolBox.fromHexString(options.windowId)]
+      );
+      break;
+        
+    case 'setzeroposition':
+      sendPacketToCenterNode(
+        wifiCommandValue('WiFi_Command_Set_Zero_Position'),
+        [...toolBox.fromHexString(options.windowId)]
       );
       break;
 

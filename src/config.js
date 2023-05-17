@@ -13,6 +13,13 @@ module.exports = {
       'WiFi_Command_Set_Setting',
       'WiFi_Command_Remove_Window',
       'WiFi_Command_Add_Window',
+      'WiFi_Command_Move_Forward',
+      'WiFi_Command_Stop_Moving',
+      'WiFi_Command_Move_Backward',
+      'WiFi_Command_Window_Lock',
+      'WiFi_Command_Window_Unlock',
+      'WiFi_Command_Set_Zero_Position',
+      
       'WiFi_Command_Error',
     ],
     WIFI_PACKET_ERROR: [
@@ -46,6 +53,7 @@ module.exports = {
       'Setting_Set_Motor_Driver_2_PWM_Frequency',
       'Setting_Set_Motor_Driver_1_PWM_Inverted',
       'Setting_Set_Motor_Driver_2_PWM_Inverted',
+      'Setting_Set_Encoder_Inverted',
       'Setting_Set_Sensor_Input_Configs',
       'Setting_Set_Network_Mode',
       'Setting_Set_Wifi_Mode_Server_SSID',

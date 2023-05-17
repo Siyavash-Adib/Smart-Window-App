@@ -12,10 +12,58 @@ function init(uiEventsHandlerCallback) {
   navBarInit();
   uiEventsHandler = uiEventsHandlerCallback;
 
-  goToPage('.home-page');
-  // goToPage('.settings-page');
+  // goToPage('.home-page');
+  goToPage('.settings-page');
 
   dialogsInit();
+
+  document.querySelector('.control-panel--button-move-forward')
+    .addEventListener('click', (event) => {
+      uiEventsHandler({
+        sourceType: '.control-panel--button',
+        eventName: 'move-forward'
+      });
+    });
+  
+  document.querySelector('.control-panel--button-stop-moving')
+    .addEventListener('click', (event) => {
+      uiEventsHandler({
+        sourceType: '.control-panel--button',
+        eventName: 'stop-moving'
+      });
+    });
+  
+  document.querySelector('.control-panel--button-move-backward')
+    .addEventListener('click', (event) => {
+      uiEventsHandler({
+        sourceType: '.control-panel--button',
+        eventName: 'move-backward'
+      });
+    });
+  
+  document.querySelector('.control-panel--button-window-lock')
+    .addEventListener('click', (event) => {
+      uiEventsHandler({
+        sourceType: '.control-panel--button',
+        eventName: 'window-lock'
+      });
+    });
+  
+  document.querySelector('.control-panel--button-window-unlock')
+    .addEventListener('click', (event) => {
+      uiEventsHandler({
+        sourceType: '.control-panel--button',
+        eventName: 'window-unlock'
+      });
+    });
+  
+  document.querySelector('.control-panel--button-set-zero-position')
+    .addEventListener('click', (event) => {
+      uiEventsHandler({
+        sourceType: '.control-panel--button',
+        eventName: 'set-zero-position'
+      });
+    });
 }
 
 function dialogsInit () {
@@ -45,19 +93,6 @@ function dialogsInit () {
 
   addClickSoundToUIElements(dialog3);
   addClickEventToUIElements(dialog3, '.dialog-3');
-  
-  // dialog1.showModal();
-
-  // opendialog('select', {
-  //   text: "Some Name",
-  //   selectOptions : [
-  //     'option1',
-  //     'option2',
-  //     'option3',
-  //     'option4',
-  //     'option5',
-  //   ],
-  // });
 }
 
 function empySelectOptions(selectElement) {
@@ -564,6 +599,11 @@ function showPage(pageSelector) {
     if(pageElement) {
       pageElement.classList.remove('hidden-page');
     }
+    
+    pageElement = document.querySelector('.control-panel');
+    if(pageElement) {
+      pageElement.classList.remove('hidden-page');
+    }
   }
 }
 
@@ -579,7 +619,14 @@ function hideAllOtherPages(pageSelector) {
   }
 
   if(pageSelector === '.home-page') {
-    let navBar = document.querySelector('.nav-bar');
+    let navBar;
+    
+    navBar= document.querySelector('.nav-bar');
+    if(navBar) {
+      navBar.classList.add('hidden-page');
+    }
+    
+    navBar = document.querySelector('.control-panel');
     if(navBar) {
       navBar.classList.add('hidden-page');
     }
@@ -820,6 +867,20 @@ function swtichSettingsPage(newPage) {
   }
 }
 
+function getMoveCommandTime () {
+  let result = document.querySelector(
+    '.control-panel--input-move-command-time input'
+  ).value;
+
+  result = parseInt(result);
+
+  if(isNaN(result)) {
+    result = 0;
+  }
+
+  return result;
+}
+
 module.exports = {
   init,
   addNewSettingCard,
@@ -852,5 +913,6 @@ module.exports = {
   focusNavBarItem,
   setWindowLockState,
   setWindowBlockedState,
+  getMoveCommandTime,
 };
 

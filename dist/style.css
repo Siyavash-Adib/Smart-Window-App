@@ -53,6 +53,7 @@
   --cl-black-1: #313336;
   --cl-black-2: #030303;
 
+  --control-panel-height: 70px;
   --nav-bar-height: 70px;
   --max-page-width: 375px;
 
@@ -423,7 +424,7 @@ body {
 .nav-bar {
   background-color: white;
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: 0;
   right: 0;
   margin: auto;
@@ -482,8 +483,85 @@ body {
   font-weight: 800;
 }
 
+/*                                                           */
+
+.control-panel {
+  background-color: white;
+  position: sticky;
+  top: 0;
+  width: min(100%, var(--max-page-width));
+  /* min-height: var(--control-panel-height); */
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 10px;
+  gap: 10px;
+  box-shadow: 0 0 10px 0 black;
+  z-index: 999;
+  flex-wrap: wrap;
+}
+
+.control-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: calc(100% - 5px);
+  height: calc(100% - 5px);
+  background-color: var(--cl-gray-5);
+  box-shadow: 0 0 10px 0 var(--cl-gray-4);
+  z-index: 999;
+  border-radius: 5px;
+}
+
+.control-panel--button {
+  background-color: var(--cl-gray-1);
+  box-shadow: 0 0 5px 0 black;
+  color: black;
+  border-radius: 5px;
+  display: grid;
+  padding: 5px 10px;
+  place-items: center;
+  z-index: 1000;
+  position: relative;
+}
+
+.control-panel--button:nth-child(2n) {
+  
+}
+
+.control-panel--button:nth-child(2n + 1) {
+
+}
+
+.control-panel--button > * {
+  text-align: center;
+}
+
+.control-panel--input {
+  grid-column: span 3;
+  background-color: var(--cl-gray-1);
+  box-shadow: inset 0 0 3px black;
+  height: 100%;
+  width: 100%;
+  z-index: 1000;
+  display: flex;
+  padding: 5px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 5px;
+}
+
+.control-panel--input input {
+  padding: 3px;
+  font: inherit;
+}
+
+/*                                                           */
+
 .settings-page--content {
-  padding-top: var(--nav-bar-height);
+  padding-bottom: var(--nav-bar-height);
+  /* padding-top: var(--control-panel-height); */
 }
 
 .setting-card {

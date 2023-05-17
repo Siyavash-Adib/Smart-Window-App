@@ -1,4 +1,4 @@
-// console.clear();
+console.clear();
 
 const toolBox = require('./toolBox.js');
 const menuControl = require('./menuControl.js');
@@ -66,6 +66,43 @@ function uiEventsHandler(event) {
   console.log('uiEvent:', event);
 
   switch(event.sourceType) {
+    case '.control-panel--button':
+      switch(event.eventName) {
+        case 'move-forward':
+          wifiCom.sendCommandPacket('moveForward', {
+            windowId: appSelectedWindowCard,
+            movementTime: menuControl.getMoveCommandTime()
+          });
+          break;
+        case 'stop-moving':
+          wifiCom.sendCommandPacket('stopMoving', {
+            windowId: appSelectedWindowCard
+          });
+          break;
+        case 'move-backward':
+          wifiCom.sendCommandPacket('moveBackward', {
+            windowId: appSelectedWindowCard,
+            movementTime: menuControl.getMoveCommandTime()
+          });
+          break;
+        case 'window-lock':
+          wifiCom.sendCommandPacket('windowLock', {
+            windowId: appSelectedWindowCard
+          });
+          break;
+        case 'window-unlock':
+          wifiCom.sendCommandPacket('windowUnlock', {
+            windowId: appSelectedWindowCard
+          });
+          break;
+        case 'set-zero-position':
+          wifiCom.sendCommandPacket('setZeroPosition', {
+            windowId: appSelectedWindowCard
+          });
+          break;
+      }
+      break;
+
     case '.nav-bar--item':
       switch(event.eventName) {
         case 'Home':
@@ -215,6 +252,7 @@ function uiEventsHandler(event) {
             case 'Motor 2 Reversed':
             case 'Motor Driver 1 PWM Inverted':
             case 'Motor Driver 2 PWM Inverted':
+            case 'Encoder Inverted':
               event.setting.value = event.setting.value === 'No' ? 0 : 1;
               convertValueToArray('uint8');
               break;
@@ -362,6 +400,16 @@ function uiEventsHandler(event) {
               });
               break;
 
+            case 'Encoder Inverted':
+              menuControl.opendialog('select', {
+                text: event.settingName,
+                selectOptions: [
+                  'Yes',
+                  'No',
+                ],
+              });
+              break;
+
             case 'Network Mode':
               menuControl.opendialog('select', {
                 text: event.settingName,
@@ -492,6 +540,12 @@ function appRefreshSettingsPage() {
   let selectedWindow = latestDevicesStatus.find((device) => {
     return device.settings.Device_ID.value === appSelectedWindowCard;
   });
+
+  if(!selectedWindow) {
+    console.log('selectedWindow is empty, falling back to index [0]');
+    appSelectedWindowCard = latestDevicesStatus[0].settings.Device_ID.value;
+    selectedWindow = latestDevicesStatus[0];
+  }
 
   const settingsObjectEntries = Object.entries(selectedWindow.settings);
   moveSensorInputConfigsToEndOfArray(settingsObjectEntries);
@@ -631,6 +685,7 @@ function appRefreshHomePage() {
       menuControl.windowGoOnline(device.settings.Device_ID.value);
     } else {
       menuControl.windowGoOffline(device.settings.Device_ID.value);
+      console.log("device not responding:", device);
     }
     
     menuControl.setWindowLockState(
@@ -791,16 +846,13 @@ function appStateMachineTick(consoleDebugMessages=false) {
           break;
 
         case 3:
+          appRefreshHomePage();
           switch(menuControl.getCurrentPage()) {
             case '.home-page':
-              appRefreshHomePage();
-              break;
-            
-            case '.settings-page':
-              appRefreshSettingsPage();
               break;
             
             default:
+              appRefreshSettingsPage();
               break;
           }
           appStateMachineGoToState('idle');
